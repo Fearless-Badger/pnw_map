@@ -1,0 +1,28 @@
+DRF + Vue.js
+
+Frontend - 
+    - Lolia, Lazar, Mason
+
+Backend - 
+    - Micah, Joel
+
+
+
+Pages
+    - Register student
+        - home Address
+        - fname, mname, lname
+        - Student ID
+    
+    - Register event
+        - Address, time
+        - Allow attendees to register
+
+    - Display events on map
+        - Make pins for each event
+        - Redirect to page 4 when directions requested
+    
+    - Display driving route, distance, and time ON OUR WEBSITE
+        - use student home address as start point
+
+    
