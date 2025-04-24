@@ -4,7 +4,7 @@ Frontend -
     - Lolia, Lazar, Mason
 
 Backend - 
-    - Micah, Joel
+    - Micah, Joel, Jesse
 
 
 
