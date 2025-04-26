@@ -88,25 +88,26 @@ WSGI_APPLICATION = 'django_app.wsgi.application'
 
    `python manage.py makemigrations`
    `python manage.py migrate`
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pnw_map_db',  # Database name - soon to be env var
+        'NAME': 'map_database',  # Database 
         'USER': 'root',        # MySQL username
-        'PASSWORD': 'password',  # MySQL database password
-        'HOST': 'localhost',   # Use container name
+        'PASSWORD': 'hunter',  # MySQL database password
+        'HOST': 'db',   # Container name
         'PORT': '3306',        # MySQL port
     }
-} """
+}
 
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+"""
 
 
 # Password validation

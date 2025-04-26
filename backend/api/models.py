@@ -15,7 +15,7 @@ class Event(models.Model):
 
     def __str__(self):
         return str(self.event_name)
-    
+
 
 class Student(models.Model):
     student_id = models.AutoField(primary_key=True)

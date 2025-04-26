@@ -1,3 +1,5 @@
+# UNTESTED
+
 services:
   db:
     image: mysql:8.0
@@ -8,12 +10,28 @@ services:
       - MYSQL_USER=${DB_USER}
       - MYSQL_PASSWORD=${DB_PASSWORD}
     volumes:
-      - ./database:/docker-entrypoint-initdb.d
       - mysql_data:/var/lib/mysql
     networks:
       - app_net
 
-
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: django_app
+    command: gunicorn django_app.wsgi:application --bind 0.0.0.0:8000 --workers 3
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=db
+      - DB_PORT=3306
+    depends_on:
+      - db
+    networks:
+      - app_net
 
 volumes:
   mysql_data:

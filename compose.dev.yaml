@@ -15,8 +15,20 @@ services:
     networks:
       - app_net
 
-
-
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: django_app
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - app_net
+    volumes:
+      - ./backend:/backend
 
 volumes:
   mysql_data:

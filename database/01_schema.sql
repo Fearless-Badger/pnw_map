@@ -35,6 +35,4 @@ CREATE TABLE IF NOT EXISTS registration(
     FOREIGN KEY (event_id) REFERENCES events(event_id)
 );
 
-
-
 COMMIT;
