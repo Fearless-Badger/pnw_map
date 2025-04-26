@@ -1,5 +1,7 @@
 START TRANSACTION;
 
+USE map_database;
+
 INSERT INTO students (student_id, fname, mname, lname, street_address, city, state, zip_code)
 VALUES
 (1, 'Micah', 'H', 'Najacht', '123 Main St', 'Hammond', 'IN', '46323'),
@@ -28,12 +30,12 @@ city = VALUES(city),
 state = VALUES(state),
 zip_code = VALUES(zip_code);
 
-INSERT INTO registration (user_id, event_id)
+INSERT INTO registration (student_id, event_id)
 VALUES
 (1, 1),
 (2, 2)
 ON DUPLICATE KEY UPDATE
-user_id = VALUES(user_id),
+student_id = VALUES(student_id),
 event_id = VALUES(event_id);
 
 COMMIT;

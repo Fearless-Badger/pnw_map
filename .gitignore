@@ -209,3 +209,6 @@ public/
 
 # TernJS port file
 .tern-port
+
+# Mysql script
+my_tests.sql
