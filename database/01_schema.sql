@@ -27,4 +27,14 @@ CREATE TABLE IF NOT EXISTS events(
     zip_code VARCHAR(20)
 );
 
+CREATE TABLE IF NOT EXISTS registration(
+    user_id INT,
+    event_id INT,
+    PRIMARY KEY (user_id, event_id),
+    FOREIGN KEY (user_id) REFERENCES students(user_id),
+    FOREIGN KEY (event_id) REFERENCES events(event_id)
+);
+
+
+
 COMMIT;
