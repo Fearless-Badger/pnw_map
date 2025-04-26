@@ -1,35 +1,16 @@
-@import './base.css';
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+:root {
+  --pnw-gold: #c69214;
+  --pnw-black: #000000;
+  --pnw-gray: #808080;
+  --pnw-white: #ffffff;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+body {
+  background-color: var(--pnw-white);
+  color: var(--pnw-black);
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-}
+/* You can add more shared styles here later if needed */
