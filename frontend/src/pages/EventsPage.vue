@@ -14,7 +14,15 @@
         </div>
   
         <div class="map-placeholder">
-          Map will be displayed here.
+          <iframe
+            width="1000"
+            height="300"
+            style="border:0"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=Purdue+Northwest+University"> <!-- Need API key to test -->
+          </iframe>
         </div>
       </div>
     </div>
