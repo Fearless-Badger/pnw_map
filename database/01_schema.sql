@@ -12,19 +12,19 @@ CREATE TABLE IF NOT EXISTS students(
     street_address VARCHAR(255),
     city VARCHAR(255),
     state VARCHAR(255),
-    zip_code VARCHAR(20)
+    zip_code VARCHAR(31)
 );
 
 CREATE TABLE IF NOT EXISTS events(
     event_id INT PRIMARY KEY AUTO_INCREMENT,
-    abstract VARCHAR(2000),
+    abstract VARCHAR(2047),
     date DATE,
     event_name VARCHAR(255),
     cost INT,
     street_address VARCHAR(255),
     city VARCHAR(255),
     state VARCHAR(255),
-    zip_code VARCHAR(20)
+    zip_code VARCHAR(31)
 );
 
 CREATE TABLE IF NOT EXISTS registration(
