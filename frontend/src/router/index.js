@@ -28,6 +28,11 @@ const routes = [
     name: 'signup',
     component: SignUpPage
   },
+  {
+    path: '/register',
+    name: 'register',
+    component: RegistrationPage,
+  },
 ]
 
 const router = createRouter({
