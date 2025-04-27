@@ -18,6 +18,16 @@ const routes = [
     name: 'events',
     component: EventsPage,
   },
+  {
+    path: '/login',
+    name: 'login',
+    component: LognPage
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: SignUpPage
+  },
 ]
 
 const router = createRouter({
