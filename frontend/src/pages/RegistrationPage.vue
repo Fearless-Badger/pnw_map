@@ -90,20 +90,7 @@
   </script>
   
   <style scoped>
-  :root { 
-    /* 
-        Official Purdue Boilermakers Hexcode colors:
-        -   https://teamcolorcodes.com/purdue-boilermakers-colors/ 
-    */
-    --pnw-campus-gold: #C28E0E;
-    --pnw-athletic-gold: #CEB888;
-    --pnw-white: #f3f4f6;
-    --pnw-gray: #9D968D;
-    --pnw-dark-gray: #373A36;
-    --pnw-black: #000000;
-  }
-  
-  .registration-page {
+    .registration-page {
     min-height: 100vh;
     background: linear-gradient(to bottom, var(--pnw-white), #f3f4f6);
     display: flex;
@@ -114,7 +101,7 @@
   
   .form-container {
     background-color: var(--pnw-white);
-    border: 2px solid var(--pnw-campus-gold);
+    border: 2px solid var(--pnw-gold);
     border-radius: 8px;
     padding: 2rem;
     width: 100%;
@@ -149,7 +136,7 @@
   .submit-button {
     width: 100%;
     padding: 0.75rem;
-    background-color: var(--pnw-campus-gold);
+    background-color: var(--pnw-gold);
     color: var(--pnw-black);
     font-weight: bold;
     border: none;
@@ -159,7 +146,7 @@
   }
   
   .submit-button:hover {
-    background-color: var(--pnw-athletic-gold);
+    background-color: #bfa32f;;
   }
   
   .error-message {
@@ -168,7 +155,7 @@
   }
   
   .error-message h2 {
-    color: var(--pnw-campus-gold);
+    color: var(--pnw-gold);
   }
   </style>
   
