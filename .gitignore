@@ -212,3 +212,8 @@ public/
 
 # Mysql script
 my_tests.sql
+
+# Env info
+.env
+.env.prod
+.env.dev

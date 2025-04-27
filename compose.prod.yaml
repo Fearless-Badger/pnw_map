@@ -10,26 +10,32 @@ services:
       - MYSQL_USER=${DB_USER}
       - MYSQL_PASSWORD=${DB_PASSWORD}
     volumes:
+      - ./database:/docker-entrypoint-initdb.d
       - mysql_data:/var/lib/mysql
     networks:
       - app_net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     container_name: django_app
-    command: gunicorn django_app.wsgi:application --bind 0.0.0.0:8000 --workers 3
+    env_file:
+      - .env.prod
+    command: >
+      sh -c "python manage.py migrate &&
+             gunicorn django_app.wsgi:application --bind 0.0.0.0:8000 --workers 3"
     ports:
       - "8000:8000"
-    environment:
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_HOST=db
-      - DB_PORT=3306
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - app_net
 

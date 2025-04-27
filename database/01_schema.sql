@@ -28,9 +28,10 @@ CREATE TABLE IF NOT EXISTS events(
 );
 
 CREATE TABLE IF NOT EXISTS registration(
+    id INT PRIMARY KEY AUTO_INCREMENT,
     student_id INT,
     event_id INT,
-    PRIMARY KEY (student_id, event_id),
+    UNIQUE (student_id, event_id),
     FOREIGN KEY (student_id) REFERENCES students(student_id),
     FOREIGN KEY (event_id) REFERENCES events(event_id)
 );

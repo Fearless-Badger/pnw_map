@@ -14,21 +14,32 @@ services:
       - "3333:3306"
     networks:
       - app_net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     container_name: django_app
-    command: python manage.py runserver 0.0.0.0:8000
+    env_file:
+      - .env
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - app_net
     volumes:
       - ./backend:/backend
+      - ./backend/staticfiles:/backend/staticfiles
 
 volumes:
   mysql_data:

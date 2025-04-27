@@ -9,8 +9,13 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
+
+# API KEY STUFF
+GOOGLE_API_KEY=os.getenv('GOOGLE_API_KEY', 'Bro didnt setup a key')
+GOOGLE_ADDRESS_VALIDATION_KEY=os.getenv('GOOGLE_ADDRESS_VALIDATION_KEY', "put the code in the repo lil bro")
+GOOGLE_ADDRESS_VALIDATION_SECRET=os.getenv('GOOGLE_ADDRESS_VALIDATION_SECRET', "")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,10 +28,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-vqks^ebt6qmme6i-n%7=%z#om$$qj1zbmmmau_j$ehosr)t&qx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+}
+
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Application definition
 
@@ -39,6 +56,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -92,11 +110,11 @@ WSGI_APPLICATION = 'django_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'map_database',  # Database 
-        'USER': 'root',        # MySQL username
-        'PASSWORD': 'hunter',  # MySQL database password
-        'HOST': 'db',   # Container name
-        'PORT': '3306',        # MySQL port
+        'NAME': os.getenv("DB_NAME", ""),  # Database 
+        'USER': os.getenv("DB_USER", ""),        # MySQL username
+        'PASSWORD': os.getenv("DB_ROOT_PASSWORD", ""),  # MySQL database password
+        'HOST': os.getenv("DB_HOST", ""),   # Container name
+        'PORT': os.getenv("DB_PORT", ""),        # MySQL port
     }
 }
 
