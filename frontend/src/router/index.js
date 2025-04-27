@@ -1,12 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import EventsPage from '../pages/EventsPage.vue'
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView,
+    component: () => import('../views/HomeView.vue'),
   },
   {
     path: '/about',
@@ -16,22 +14,22 @@ const routes = [
   {
     path: '/events',
     name: 'events',
-    component: EventsPage,
+    component: () => import('../pages/EventsPage.vue'),
   },
   {
     path: '/login',
     name: 'login',
-    component: LognPage
+    component: () => import('../pages/LoginPage.vue'),
   },
   {
     path: '/signup',
     name: 'signup',
-    component: SignUpPage
+    component: () => import('../pages/SignupPage.vue'),
   },
   {
     path: '/register',
     name: 'register',
-    component: RegistrationPage,
+    component: () => import('../pages/RegistrationPage.vue'),
   },
 ]
 
