@@ -1,20 +1,22 @@
 <template>
   <div class="login-page">
-    <h1 class="page-title">Login</h1>
-    <form @submit.prevent="handleLogin" class="form">
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input id="email" v-model="email" type="email" required />
-      </div>
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input id="password" v-model="password" type="password" required />
-      </div>
-      <button type="submit" class="btn">Login</button>
-    </form>
-    <p class="signup-prompt">
-      Don't have an account? <router-link to="/signup">Please sign up</router-link>
-    </p>
+    <div class="login-form">
+      <h1 class="page-title">Login</h1>
+      <form @submit.prevent="handleLogin" class="form">
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input id="email" v-model="email" type="email" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+         <input id="password" v-model="password" type="password" required />
+       </div>
+       <button type="submit" class="btn">Login</button>
+      </form>
+      <p class="signup-prompt">
+       Don't have an account? <router-link to="/signup">Please sign up</router-link>
+      </p>
+    </div>
   </div>
 </template>
 
@@ -31,7 +33,16 @@ const handleLogin = () => {
 </script>
 
 <style scoped>
-.login-page {
+.login-page /* Laz: Added a new div and changes the OG login page to login-form, that way you can edit the background as well. */
+{
+  min-height: 100vh;
+  background: linear-gradient(to bottom, var(--pnw-white), #f3f4f6);
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.login-form{
   max-width: 400px;
   border: 2px solid var(--pnw-gold);
   margin: 2rem auto;

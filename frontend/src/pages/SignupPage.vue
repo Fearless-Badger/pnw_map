@@ -1,21 +1,23 @@
 <template>
   <div class="register-event-page">
-    <h1 class="page-title">Register Event</h1>
-    <form @submit.prevent="handleRegister" class="form">
-      <div class="form-group">
-        <label for="eventName">Event Name:</label>
-        <input id="eventName" v-model="eventName" type="text" required />
-      </div>
-      <div class="form-group">
-        <label for="address">Event Address:</label>
-        <input id="address" v-model="address" type="text" required />
-      </div>
-      <div class="form-group">
-        <label for="eventTime">Event Time:</label>
-        <input id="eventTime" v-model="eventTime" type="datetime-local" required />
-      </div>
-      <button type="submit" class="btn">Register Event</button>
-    </form>
+    <div class="register-event-form">
+      <h1 class="page-title">Register Event</h1>
+      <form @submit.prevent="handleRegister" class="form">
+        <div class="form-group">
+          <label for="eventName">Event Name:</label>
+          <input id="eventName" v-model="eventName" type="text" required />
+        </div>
+        <div class="form-group">
+          <label for="address">Event Address:</label>
+          <input id="address" v-model="address" type="text" required />
+        </div>
+        <div class="form-group">
+          <label for="eventTime">Event Time:</label>
+          <input id="eventTime" v-model="eventTime" type="datetime-local" required />
+        </div>
+        <button type="submit" class="btn">Register Event</button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -33,14 +35,25 @@ const handleRegister = () => {
 </script>
 
 <style scoped>
-.register-event-page {
-  border: 2px solid var(--pnw-gold);
+
+/* Laz: Added a new div and changes the OG register-event-page to register-event-form, that way you can edit the background as well. */
+.register-event-page { 
+  min-height: 100vh;
+  background: linear-gradient(to bottom, var(--pnw-white), #f3f4f6);
+  /* Laz: Do not add flex unless you decide to further detail the widths */
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.register-event-form {
   max-width: 500px;
   margin: 2rem auto;
+  border: 2px solid var(--pnw-gold);
   padding: 2rem;
   background: var(--pnw-white);
   border-radius: 0.75rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .page-title {

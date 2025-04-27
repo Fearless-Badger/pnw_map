@@ -96,13 +96,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
+    padding: 0rem;
   }
   
   .form-container {
     background-color: var(--pnw-white);
     border: 2px solid var(--pnw-gold);
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 2rem;
     width: 100%;
     max-width: 500px;
