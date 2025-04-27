@@ -1,3 +1,5 @@
+# UNTESTED
+
 services:
   db:
     image: mysql:8.0
@@ -10,8 +12,6 @@ services:
     volumes:
       - ./database:/docker-entrypoint-initdb.d
       - mysql_data:/var/lib/mysql
-    ports:
-      - "3333:3306"
     networks:
       - app_net
     healthcheck:
@@ -19,6 +19,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    
 
   backend:
     build:
@@ -26,10 +27,10 @@ services:
       dockerfile: Dockerfile
     container_name: django_app
     env_file:
-      - .env
+      - .env.prod
     command: >
       sh -c "python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8000"
+             gunicorn django_app.wsgi:application --bind 0.0.0.0:8000 --workers 3"
     ports:
       - "8000:8000"
     depends_on:
@@ -37,9 +38,6 @@ services:
         condition: service_healthy
     networks:
       - app_net
-    volumes:
-      - ./backend:/backend
-      - ./backend/staticfiles:/backend/staticfiles
 
 volumes:
   mysql_data:
