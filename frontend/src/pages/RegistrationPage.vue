@@ -106,11 +106,11 @@
     padding: 2rem;
     width: 100%;
     max-width: 500px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
   
   h1 {
-    color: var(--pnw-black);
+    color: var(--pnw-gold);
     text-align: center;
     margin-bottom: 1.5rem;
   }
@@ -129,10 +129,10 @@
   input {
     width: 100%;
     padding: 0.5rem;
-    border: 1px solid var(--pnw-campus-gold);
+    border: 1px solid #ccc;
     border-radius: 4px;
   }
-  
+
   .submit-button {
     width: 100%;
     padding: 0.75rem;
@@ -146,7 +146,7 @@
   }
   
   .submit-button:hover {
-    background-color: #bfa32f;;
+    background-color: #bfa32f;
   }
   
   .error-message {

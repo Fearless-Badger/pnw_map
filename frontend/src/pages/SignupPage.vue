@@ -34,12 +34,13 @@ const handleRegister = () => {
 
 <style scoped>
 .register-event-page {
+  border: 2px solid var(--pnw-gold);
   max-width: 500px;
   margin: 2rem auto;
   padding: 2rem;
   background: var(--pnw-white);
   border-radius: 0.75rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
 
 .page-title {

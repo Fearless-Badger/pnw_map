@@ -33,6 +33,7 @@ const handleLogin = () => {
 <style scoped>
 .login-page {
   max-width: 400px;
+  border: 2px solid var(--pnw-gold);
   margin: 2rem auto;
   padding: 2rem;
   background: var(--pnw-white);
