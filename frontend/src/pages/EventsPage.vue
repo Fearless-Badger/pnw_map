@@ -21,7 +21,7 @@
             loading="lazy"
             allowfullscreen
             referrerpolicy="no-referrer-when-downgrade"
-            src="https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=Purdue+Northwest+University"> <!-- Need API key to test -->
+            :src="iframeSrc">
           </iframe>
         </div>
       </div>
@@ -68,6 +68,8 @@
       description: 'Celebrate the College of Humanities, Education, and Social Sciences!',
     }
   ])
+
+  const iframeSrc = `https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_API_KEY}&q=Purdue+Northwest+University`;
   </script>
   
   <style scoped>
