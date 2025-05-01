@@ -9,12 +9,12 @@
         </div>
         <div class="form-group">
           <label for="password">Password:</label>
-         <input id="password" v-model="password" type="password" required />
-       </div>
-       <button type="submit" class="btn">Login</button>
+          <input id="password" v-model="password" type="password" required />
+        </div>
+        <button type="submit" class="btn">Login</button>
       </form>
       <p class="signup-prompt">
-       Don't have an account? <router-link to="/signup">Please sign up</router-link>
+        Don't have an account? <router-link to="/signup">Please sign up</router-link>
       </p>
     </div>
   </div>
@@ -33,8 +33,7 @@ const handleLogin = () => {
 </script>
 
 <style scoped>
-.login-page /* Laz: Added a new div and changes the OG login page to login-form, that way you can edit the background as well. */
-{
+.login-page /* Laz: Added a new div and changes the OG login page to login-form, that way you can edit the background as well. */ {
   min-height: 100vh;
   background: linear-gradient(to bottom, var(--pnw-white), #f3f4f6);
   justify-content: center;
@@ -42,7 +41,7 @@ const handleLogin = () => {
   padding: 2rem;
 }
 
-.login-form{
+.login-form {
   max-width: 400px;
   border: 2px solid var(--pnw-gold);
   margin: 2rem auto;
