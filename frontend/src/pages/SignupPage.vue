@@ -35,9 +35,8 @@ const handleRegister = () => {
 </script>
 
 <style scoped>
-
 /* Laz: Added a new div and changes the OG register-event-page to register-event-form, that way you can edit the background as well. */
-.register-event-page { 
+.register-event-page {
   min-height: 100vh;
   background: linear-gradient(to bottom, var(--pnw-white), #f3f4f6);
   /* Laz: Do not add flex unless you decide to further detail the widths */
