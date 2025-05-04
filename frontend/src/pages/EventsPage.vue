@@ -3,85 +3,98 @@
     <div class="events-container">
       <h1 class="events-title">Upcoming Campus Events</h1>
 
-      <div class="events-list">
-        <div v-for="event in events" :key="event.id" class="event-card" @click="selectedEvent = event" style="cursor: pointer">
-          <h2 class="event-name">{{ event.name }}</h2>
-          <p class="event-info">📅 {{ event.date }} — 📍 {{ event.location }}</p>
-          <p class="event-description">{{ event.description }}</p>
-        </div>
+      <div v-if="loading" class="loading-message">
+        Loading events...
       </div>
+      <div v-else-if="error" class="error-message">
+        {{ error }}
+      </div>
+      <div v-else>
+        <div class="events-list">
+          <div v-for="event in events" :key="event.event_id" class="event-card" @click="selectedEvent = event" style="cursor: pointer">
+            <h2 class="event-name">{{ event.event_name }}</h2>
+            <p class="event-info">📅 {{ formatDate(event.date) }} — 📍 {{ formatLocation(event) }}</p>
+            <p class="event-description">{{ event.abstract }}</p>
+            <p class="event-cost" v-if="event.cost">Cost: ${{ event.cost }}</p>
+          </div>
+        </div>
 
-      <div class="map-placeholder">
-        <iframe
-          width="1000"
-          height="300"
-          style="border: 0"
-          loading="lazy"
-          allowfullscreen
-          referrerpolicy="no-referrer-when-downgrade"
-          :src="iframeSrc"
-        >
-        </iframe>
+        <div class="map-placeholder">
+          <iframe
+            width="1000"
+            height="300"
+            style="border: 0"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+            :src="iframeSrc"
+          >
+          </iframe>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
-const events = ref([
-  {
-    id: 1,
-    name: 'Intramural Cricket',
-    date: 'April 27, 2025, 11:00 AM - 1:00 PM',
-    location: 'PNW Campus Field',
-    locationQuery: 'Gyte Annex, 171st St, Hammond, IN 46323',
-    description: 'Gather your friends and join Intramural Cricket!',
-  },
-  {
-    id: 2,
-    name: 'Intramural Fishing Challenge',
-    date: 'April 28, 2025',
-    location: 'PNW Campus Lake',
-    locationQuery: '41.57869676306875, -87.47410443640771',
-    description: 'Get ready to tackle the competition in our Fishing Challenge!',
-  },
-  {
-    id: 3,
-    name: 'Study Away 101: Students’ Guide to Going Global',
-    date: 'April 28, 2025, 12:00 PM - 1:00 PM',
-    location: 'Study Abroad Office',
-    locationQuery: 'Purdue University Northwest Library',
-    description: 'Prepare to expand your global horizons at our Study Away session.',
-  },
-  {
-    id: 4,
-    name: 'Pancake Study Break (Westville)',
-    date: 'April 28, 2025, 12:00 PM - 2:00 PM',
-    location: 'Westville Campus',
-    locationQuery: 'Purdue University Northwest - Westville Campus',
-    description: 'Take a break from studying and come have some fun with pancakes!',
-  },
-  {
-    id: 5,
-    name: 'CHESS Day of Giving Party!',
-    date: 'April 30, 2025, 1:00 PM - 2:30 PM',
-    location: 'CHESS Building Lawn',
-    locationQuery: '41.58525, -87.47336',
-    description: 'Celebrate the College of Humanities, Education, and Social Sciences!',
-  },
-])
-
-import { computed } from 'vue'
-
+const events = ref([])
+const loading = ref(true)
+const error = ref(null)
 const selectedEvent = ref(null)
+
+const fetchEvents = async () => {
+  try {
+    loading.value = true
+    error.value = null
+    const response = await fetch('http://localhost:8000/api/events/')
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const data = await response.json()
+    events.value = data
+  } catch (err) {
+    error.value = `Error loading events: ${err.message}`
+    console.error('Error fetching events:', err)
+  } finally {
+    loading.value = false
+  }
+}
+
+const formatDate = (dateString) => {
+  if (!dateString) return 'Date not set'
+  try {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    })
+  } catch (err) {
+    console.error('Error formatting date:', err)
+    return 'Invalid date'
+  }
+}
+
+const formatLocation = (event) => {
+  if (!event) return 'Location not set'
+  return `${event.street_address}, ${event.city}, ${event.state} ${event.zip_code}`
+}
 
 const iframeSrc = computed(() => {
   const base = 'https://www.google.com/maps/embed/v1/place'
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY
-  const query = selectedEvent.value?.locationQuery || 'Purdue Northwest University'
+  const query = selectedEvent.value 
+    ? `${selectedEvent.value.street_address}, ${selectedEvent.value.city}, ${selectedEvent.value.state} ${selectedEvent.value.zip_code}`
+    : 'Purdue Northwest University'
   return `${base}?key=${apiKey}&q=${encodeURIComponent(query)}`
+})
+
+onMounted(() => {
+  fetchEvents()
 })
 </script>
 
@@ -100,9 +113,21 @@ const iframeSrc = computed(() => {
 .events-title {
   font-size: 2.5rem;
   font-weight: bold;
-  color: var(--pnw-gold); /* Purdue Northwest Gold */
+  color: var(--pnw-gold);
   text-align: center;
   margin-bottom: 2rem;
+}
+
+.loading-message,
+.error-message {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: var(--pnw-black);
+}
+
+.error-message {
+  color: #dc3545;
 }
 
 .events-list {
@@ -115,9 +140,7 @@ const iframeSrc = computed(() => {
   border: 1px solid #ccc;
   border-radius: 0.75rem;
   padding: 1.5rem;
-  transition:
-    transform 0.3s,
-    box-shadow 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .event-card:hover {
@@ -140,6 +163,13 @@ const iframeSrc = computed(() => {
 
 .event-description {
   color: #444444;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.event-cost {
+  color: var(--pnw-gold);
+  font-weight: 600;
   font-size: 1rem;
 }
 
