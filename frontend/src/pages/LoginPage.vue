@@ -2,7 +2,7 @@
   <div class="login-page">
     <div class="login-form">
       <h1 class="page-title">Login</h1>
-      <form @submit.prevent="handleLogin" class="form">
+      <form @submit.prevent="handleSubmit" class="form">
         <div class="form-group">
           <label for="email">Email:</label>
           <input id="email" v-model="email" type="email" required />
@@ -12,9 +12,10 @@
           <input id="password" v-model="password" type="password" required />
         </div>
         <button type="submit" class="btn">Login</button>
+        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       </form>
       <p class="signup-prompt">
-        Don't have an account? <router-link to="/signup">Please sign up</router-link>
+        Don't have an account? <router-link to="/register">Please sign up</router-link>
       </p>
     </div>
   </div>
@@ -23,20 +24,39 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { inject } from 'vue'
 
 const email = ref('')
 const password = ref('')
+const errorMessage = ref('')
 const router = useRouter()
+const auth = inject('auth')
 
-//Simple test admin login
-const handleLogin = () => {
-  if (email.value === 'admin@fakeemail.com' && password.value === '123')
-  {
-    router.push('/events')
-  }
-  else
-  {
-    alert(`Invalid email or password. Try 'admin@fakeemail.com' and '123'`)
+const handleSubmit = async () => {
+  try {
+    const response = await fetch('http://localhost:8000/api/login/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email.value,
+        password: password.value
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      auth.login(data)
+      router.push('/profile')
+    } else {
+      errorMessage.value = data.error || 'Login failed'
+    }
+  } catch (error) {
+    console.error('Login error:', error)
+    errorMessage.value = 'An error occurred during login'
   }
 }
 </script>
@@ -99,5 +119,11 @@ input {
 
 .btn:hover {
   background-color: #bfa32f;
+}
+
+.error-message {
+  color: #ff4444;
+  margin-top: 1rem;
+  text-align: center;
 }
 </style>

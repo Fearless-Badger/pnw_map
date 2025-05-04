@@ -25,6 +25,8 @@ class Student(models.Model):
     fname = models.CharField(max_length=255)
     mname = models.CharField(max_length=255, blank=True, null=True)
     lname = models.CharField(max_length=255)
+    email = models.EmailField(unique=True)
+    password = models.CharField(max_length=255)  
     street_address = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     state = models.CharField(max_length=255)
