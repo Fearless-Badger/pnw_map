@@ -1,10 +1,20 @@
 <template>
   <div class="registration-page">
     <div class="form-container">
-      <h1>Student Registration</h1>
+      <h1>Create Account</h1>
 
       <div v-if="isRegistrationEnabled">
         <form @submit.prevent="handleSubmit">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" v-model="form.email" required />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" v-model="form.password" required />
+          </div>
+
           <div class="form-group">
             <label for="fname">First Name</label>
             <input type="text" id="fname" v-model="form.fname" required />
@@ -14,7 +24,6 @@
             <label for="mname">Middle Name</label>
             <input type="text" id="mname" v-model="form.mname" />
           </div>
-          <!-- Laz: mname Not required, hopefully as intended. I don't even have a middle name. -->
 
           <div class="form-group">
             <label for="lname">Last Name</label>
@@ -41,7 +50,7 @@
             <input type="text" id="zip_code" v-model="form.zip_code" required />
           </div>
 
-          <button type="submit" class="submit-button">Register</button>
+          <button type="submit" class="submit-button">Create Account</button>
         </form>
       </div>
 
@@ -53,39 +62,63 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'RegistrationPage',
-  data() {
-    return {
-      isRegistrationEnabled: true, // boolean to control if worked or not for testing (For: Micah/Backend)
-      form: {
-        fname: '',
-        mname: '',
-        lname: '',
-        street_address: '',
-        city: '',
-        state: '',
-        zip_code: '',
-      },
-    }
-  },
-  methods: {
-    handleSubmit() {
-      console.log('Registering student:', this.form)
-      alert('Registration successful!')
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-      this.form = {
-        fname: '',
-        mname: '',
-        lname: '',
-        street_address: '',
-        city: '',
-        state: '',
-        zip_code: '',
-      }
-    },
-  },
+const router = useRouter()
+const isRegistrationEnabled = ref(true)
+
+const form = ref({
+  email: '',
+  password: '',
+  fname: '',
+  mname: '',
+  lname: '',
+  street_address: '',
+  city: '',
+  state: '',
+  zip_code: '',
+})
+
+const handleSubmit = async () => {
+  try {
+    console.log('Submitting form:', form.value)
+    const response = await fetch('http://localhost:8000/api/register/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify(form.value),
+    })
+
+    console.log('Response status:', response.status)
+    const responseText = await response.text()
+    console.log('Response text:', responseText)
+    
+    let data
+    try {
+      data = JSON.parse(responseText)
+    } catch (e) {
+      console.error('Failed to parse JSON:', e)
+      throw new Error('Server returned invalid JSON response')
+    }
+    
+    if (response.ok) {
+      alert('Account created successfully!')
+      router.push('/login')
+    } else {
+      // Show more detailed error message
+      const errorMessage = Object.entries(data)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join('\n')
+      alert(`Registration failed:\n${errorMessage}`)
+    }
+  } catch (error) {
+    console.error('Registration error:', error)
+    alert(`An error occurred during registration: ${error.message}`)
+  }
 }
 </script>
 

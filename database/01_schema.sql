@@ -9,6 +9,8 @@ CREATE TABLE IF NOT EXISTS students(
     fname VARCHAR(255),
     mname VARCHAR(255),
     lname VARCHAR(255),
+    email VARCHAR(255) UNIQUE,
+    password VARCHAR(255),
     street_address VARCHAR(255),
     city VARCHAR(255),
     state VARCHAR(255),
