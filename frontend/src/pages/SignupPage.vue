@@ -1,21 +1,57 @@
 <template>
   <div class="register-event-page">
     <div class="register-event-form">
-      <h1 class="page-title">Register Event</h1>
+      <h1 class="page-title">Add New Event</h1>
       <form @submit.prevent="handleRegister" class="form">
         <div class="form-group">
           <label for="eventName">Event Name:</label>
-          <input id="eventName" v-model="eventName" type="text" required />
+          <input id="eventName" v-model="formData.event_name" type="text" required />
         </div>
+        
         <div class="form-group">
-          <label for="address">Event Address:</label>
-          <input id="address" v-model="address" type="text" required />
+          <label for="abstract">Event Description:</label>
+          <textarea id="abstract" v-model="formData.abstract" required></textarea>
         </div>
+
         <div class="form-group">
-          <label for="eventTime">Event Time:</label>
-          <input id="eventTime" v-model="eventTime" type="datetime-local" required />
+          <label for="date">Event Date and Time:</label>
+          <input id="date" v-model="formData.date" type="datetime-local" required />
         </div>
-        <button type="submit" class="btn">Register Event</button>
+
+        <div class="form-group">
+          <label for="cost">Event Cost ($):</label>
+          <input id="cost" v-model="formData.cost" type="number" min="0" step="0.01" />
+        </div>
+
+        <div class="form-group">
+          <label for="street_address">Street Address:</label>
+          <input id="street_address" v-model="formData.street_address" type="text" required />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="city">City:</label>
+            <input id="city" v-model="formData.city" type="text" required />
+          </div>
+
+          <div class="form-group">
+            <label for="state">State:</label>
+            <input id="state" v-model="formData.state" type="text" required />
+          </div>
+
+          <div class="form-group">
+            <label for="zip_code">ZIP Code:</label>
+            <input id="zip_code" v-model="formData.zip_code" type="text" required />
+          </div>
+        </div>
+
+        <div v-if="error" class="error-message">
+          {{ error }}
+        </div>
+
+        <button type="submit" class="btn" :disabled="loading">
+          {{ loading ? 'Adding Event...' : 'Add Event' }}
+        </button>
       </form>
     </div>
   </div>
@@ -23,30 +59,93 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-const eventName = ref('')
-const address = ref('')
-const eventTime = ref('')
+const router = useRouter()
+const loading = ref(false)
+const error = ref(null)
 
-const handleRegister = () => {
-  alert(`Registering event: ${eventName.value} at ${address.value} on ${eventTime.value}`)
-  // TODO: Implement actual event registration logic
+const formData = ref({
+  event_name: '',
+  abstract: '',
+  date: '',
+  cost: 0,
+  street_address: '',
+  city: '',
+  state: '',
+  zip_code: ''
+})
+
+const handleRegister = async () => {
+  try {
+    loading.value = true
+    error.value = null
+
+    // Format the date to YYYY-MM-DD
+    const date = new Date(formData.value.date)
+    const formattedDate = date.toISOString().split('T')[0]
+
+    const formattedData = {
+      ...formData.value,
+      date: formattedDate
+    }
+
+    console.log('Submitting data:', formattedData)
+
+    const response = await fetch('http://localhost:8000/api/events/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formattedData)
+    })
+
+    if (!response.ok) {
+      const data = await response.json()
+      console.error('Error response:', data)
+      
+      // Show user-friendly error message
+      if (data.message && data.message.includes('address')) {
+        throw new Error('Please enter a valid address')
+      } else if (data.date) {
+        throw new Error('Please enter a valid date')
+      } else {
+        throw new Error('Failed to add event. Please check your input and try again.')
+      }
+    }
+
+    // Clear the form
+    formData.value = {
+      event_name: '',
+      abstract: '',
+      date: '',
+      cost: 0,
+      street_address: '',
+      city: '',
+      state: '',
+      zip_code: ''
+    }
+
+    // Redirect to events page
+    router.push('/events')
+  } catch (err) {
+    error.value = err.message
+    console.error('Error adding event:', err)
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 
 <style scoped>
-/* Laz: Added a new div and changes the OG register-event-page to register-event-form, that way you can edit the background as well. */
 .register-event-page {
   min-height: 100vh;
   background: linear-gradient(to bottom, var(--pnw-white), #f3f4f6);
-  /* Laz: Do not add flex unless you decide to further detail the widths */
-  justify-content: center;
-  align-items: center;
   padding: 2rem;
 }
 
 .register-event-form {
-  max-width: 500px;
+  max-width: 600px;
   margin: 2rem auto;
   border: 2px solid var(--pnw-gold);
   padding: 2rem;
@@ -66,6 +165,12 @@ const handleRegister = () => {
   margin-bottom: 1rem;
 }
 
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
 label {
   display: block;
   font-weight: 600;
@@ -73,10 +178,23 @@ label {
   color: var(--pnw-black);
 }
 
-input {
+input, textarea {
   width: 100%;
   padding: 0.5rem;
   border: 1px solid #ccc;
+  border-radius: 0.375rem;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.error-message {
+  color: #dc3545;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background-color: #f8d7da;
   border-radius: 0.375rem;
 }
 
@@ -92,7 +210,12 @@ input {
   transition: background-color 0.3s;
 }
 
-.btn:hover {
+.btn:hover:not(:disabled) {
   background-color: #bfa32f;
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 </style>

@@ -15,11 +15,13 @@ city = VALUES(city),
 state = VALUES(state),
 zip_code = VALUES(zip_code);
 
-
 INSERT INTO events (event_id, abstract, date, event_name, cost, street_address, city, state, zip_code)
 VALUES
-(1, 'A fun student event', '2025-05-01', 'Student Life Fair', 0, '2200 169th St', 'Hammond', 'IN', '46323'),
-(2, 'A networking event for students', '2025-06-15', 'Career Networking Night', 10, '2233 173rd St', 'Hammond', 'IN', '46323')
+(1, 'Gather your friends and join Intramural Cricket!', '2025-04-27 11:00:00', 'Intramural Cricket', 0, 'Gyte Annex', 'Hammond', 'IN', '46323'),
+(2, 'Get ready to tackle the competition in our Fishing Challenge!', '2025-04-28 09:00:00', 'Intramural Fishing Challenge', 0, 'PNW Campus Lake', 'Hammond', 'IN', '46323'),
+(3, 'Prepare to expand your global horizons at our Study Away session.', '2025-04-28 12:00:00', 'Study Away 101: Students'' Guide to Going Global', 0, 'Purdue University Northwest Library', 'Hammond', 'IN', '46323'),
+(4, 'Take a break from studying and come have some fun with pancakes!', '2025-04-28 12:00:00', 'Pancake Study Break (Westville)', 5, 'Purdue University Northwest - Westville Campus', 'Westville', 'IN', '46391'),
+(5, 'Celebrate the College of Humanities, Education, and Social Sciences!', '2025-04-30 13:00:00', 'CHESS Day of Giving Party!', 0, 'CHESS Building Lawn', 'Hammond', 'IN', '46323')
 ON DUPLICATE KEY UPDATE
 abstract = VALUES(abstract),
 date = VALUES(date),
